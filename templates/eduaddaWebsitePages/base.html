@@ -1,0 +1,261 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/css/custom.css" type="text/css">
+    <link rel="stylesheet" href="static/js/custom.js" type="text/css">
+    <link rel="shortcut icon" href="/media/website/websiteLogo.jpg" type="image/x-icon">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Eduadda</title>
+  </head>
+  <body>
+    <section  id="navbarBg">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                  <!-- Logo -->
+                  <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="/media/website/websiteLogo.jpg" alt="Logo" width="70" height="70" class="d-inline-block align-text-top">
+                  </a>
+              
+                  <!-- Navbar Toggle (for responsiveness) -->
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+              
+                  <!-- Navbar Links -->
+                  <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link fs-5 {% if navbar == 'home' %} active {% endif %}" href="{% url 'home' %}" aria-current="page">Home</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link fs-5 {% if navbar == 'course' %} active {% endif %}" href="{% url 'course' %}">Course</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link fs-5 {% if navbar == 'notes' %} active {% endif %}" href="{% url 'notes' %}">Notes</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link fs-5 {% if navbar == 'notes' %} active {% endif %}" href="https://docs.google.com/forms/d/e/1FAIpQLSdM811CFFy8snJg5jFuMBwsnOV5y4BQlSKzOIujmyqB66JWWg/viewform" target="_blank">CUET Counselling</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link fs-5 {% if navbar == 'notes' %} active {% endif %}" href="https://docs.google.com/forms/d/e/1FAIpQLSfQgPBCKhgQgBxW-m3hpJR-Oap4PGyshA4hZfSRSW_9NQcx_w/viewform" target="_blank">Preference Sheet</a>
+                      </li>
+              
+                      <!-- My Purchase and Profile Links (hidden by default) -->
+                      <li class="nav-item" id="myPurchaseLink" style="display: none;">
+                        <a class="nav-link fs-5 {% if navbar == 'myPurchase' %} active {% endif %}" href="{% url 'myPurchase' %}">My Purchase</a>
+                      </li>
+                      <li class="nav-item" id="profileLink" style="display: none;">
+                        <a class="nav-link fs-5 {% if navbar == 'profile' %} active {% endif %}" href="{% url 'profile' %}">Profile</a>
+                      </li>
+                    </ul>
+                  </div>
+              
+                  <!-- Login/Logout Button on the right -->
+                  <form class="d-flex ms-auto">
+                    <a href="{% url 'login' %}" class="btn btn-outline-light" id="loginButton">Login</a>
+                    <a href="#" class="btn btn-outline-light" id="logoutButton" style="display: none;">Logout</a>
+                  </form>
+                </div>
+            </nav>
+              
+        </div>
+    </section>
+    
+    
+      
+      {% block body %}{% endblock body %}
+
+
+
+    <!-- Footer Section -->
+    <footer class="text-white py-4" id="container-bg">
+        <div class="container">
+            <div class="row">
+                <!-- About Section -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold">About Eduadda</h5>
+                    <p>Eduadda is your one-stop platform for all learning needs, offering courses and notes designed for learners at every stage of their journey. Join Eduadda and explore affordable, high-quality learning resources.</p>
+                </div>
+
+                <!-- Quick Links Section -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a></li>
+                        <li><a href="{% url 'course' %}" class="text-white text-decoration-none">Courses</a></li>
+                        <li><a href="{% url 'notes' %}" class="text-white text-decoration-none">Notes</a></li>
+                        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdM811CFFy8snJg5jFuMBwsnOV5y4BQlSKzOIujmyqB66JWWg/viewform" target="_blank" class="text-white text-decoration-none">CUET counselling</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold">Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-house-door"></i> 123 Eduadda Street, City, Country</li>
+                        <li><i class="bi bi-envelope"></i> educationaddaharshsuri@gmail.com</li>
+                        <li><i class="bi bi-phone"></i> +91 9871769250</li>
+                    </ul>
+                </div>
+
+                <!-- Social Media Section -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold">Follow Us</h5>
+                    <ul class="list-unstyled">
+                        <!-- <li><a href="#" class="text-white text-decoration-none"><i class="bi bi-facebook"></i> Facebook</a></li> -->
+                        <li><a href="https://youtube.com/@educationadda-harshsuri?si=CumQCRylTQ5RreP9" target="_blank"  class="text-white text-decoration-none"><i class="bi bi-youtube"></i> YouTube</a></li>
+                        <li><a href="https://www.linkedin.com/in/education-adda-harsh-suri-768483292 " target="_blank" class="text-white text-decoration-none"><i class="bi bi-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="https://www.instagram.com/educationaddaharshsuri?igsh=MTl6dWV0Nmxsd2tkaw%3D%3D&utm_source=qr " target="_blank" class="text-white text-decoration-none"><i class="bi bi-instagram"></i> Instagram</a></li>
+                        <li><a href="https://x.com/harshsuri07?s=21" target="_blank" class="text-white text-decoration-none"><i class="bi bi-twitter"></i> Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+                <!-- Footer Bottom -->
+                <div class="col-12 text-center">
+                    <p>&copy; 2025 Eduadda. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script>
+  $(document).ready(function () {
+    // Check if the user is logged in
+    const isActive = sessionStorage.getItem('is_active'); // Retrieve login status from sessionStorage
+
+    // Get references to the navbar elements
+    const myPurchaseLink = $('#myPurchaseLink');
+    const profileLink = $('#profileLink');
+    const loginButton = $('#loginButton');
+    const logoutButton = $('#logoutButton');
+
+    // Update the navbar based on login status
+    if (isActive === '1') {
+      // User is logged in
+      myPurchaseLink.css('display', 'block');
+      profileLink.css('display', 'block');
+      loginButton.css('display', 'none');
+      logoutButton.css('display', 'block');
+    } else {
+      // User is logged out
+      myPurchaseLink.css('display', 'none');
+      profileLink.css('display', 'none');
+      loginButton.css('display', 'block');
+      logoutButton.css('display', 'none');
+    }
+
+    // Handle logout
+    logoutButton.on('click', function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+
+      // Show a confirmation dialog
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to log out. Do you want to continue?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, log out!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // User confirmed, proceed with logout
+          const userId = sessionStorage.getItem('user_id'); // Get user ID from sessionStorage
+
+          // Show loading spinner
+          const logoutButton = $('#logoutButton');
+          const logoutText = logoutButton.text();
+          logoutButton.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging out...');
+
+          // Create FormData object
+          const form_data = new FormData();
+          form_data.append('USER_ID', userId); // Include the user ID
+          form_data.append('ACTION', 'LOGOUT'); // Indicate this is a logout request
+          form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}'); // Add CSRF token
+
+          // Send AJAX request to logout API
+          $.ajax({
+            url: "/master-api/user-logout",
+            type: 'POST',
+            async: true,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function (response) {
+              if (response.STATUS === 'SUCCESS') {
+                // Clear the login status from sessionStorage
+                sessionStorage.removeItem('user_id');
+                sessionStorage.removeItem('is_active');
+
+                // Show success message
+                Swal.fire({
+                  title: 'Logged out!',
+                  text: response.MESSAGE || 'You have been logged out successfully.',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+                }).then(() => {
+                  // Redirect to the home page
+                  window.location.href = '/';
+                });
+              } else {
+                Swal.fire({
+                  title: 'Error!',
+                  text: response.MESSAGE || 'Logout failed. Please try again.',
+                  icon: 'error',
+                  confirmButtonText: 'OK'
+                });
+              }
+            },
+            error: function (xhr, status, error) {
+              Swal.fire({
+                title: 'Error!',
+                text: 'An error occurred. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
+            },
+            complete: function () {
+              // Reset button state
+              logoutButton.text(logoutText);
+            }
+          });
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+  </body>
+</html>

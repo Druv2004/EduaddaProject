@@ -1,0 +1,109 @@
+{% extends "eduaddaWebsitePages/base.html" %}
+{% block title %}Login{% endblock title %}
+{% block body %}
+<div class="container p-5">
+  <div class="container-fluid py-5 rounded" id="login-signup">
+    <div class="row align-items-center">
+      <!-- Image in the first column -->
+      <div class="col-md-6 d-flex justify-content-center align-items-center">
+        <img src="/media/website/websiteLogo.jpg" alt="Placeholder Image" class="img-fluid rounded form-image">
+      </div>
+
+      <!-- Form in the second column -->
+      <div class="col-md-6">
+        <form class="text-light bg-light p-5" id="login-form" enctype="multipart/form-data">
+          <!-- Email Field -->
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="email" name="EMAIL" placeholder="Enter your email" required>
+            <label for="email">Email</label>
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="password" name="PASSWORD" placeholder="Enter your password" required>
+            <label for="password">Password</label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn w-100 btn-submit" id="btnn">
+            <span class="submit-text">Submit</span>
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          </button>
+          <p class="text-dark text-center pt-3 fs-5">Don't have an account? <a href="{% url 'signUp' %}">Sign up</a></p>
+          <p class="text-dark text-center  fs-5">Don't know password?<a href="{% url 'forgetPassword' %}">Forget Password</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  $(document).ready(function () {
+    $('#login-form').on('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const submitButton = $('#btnn');
+      const submitText = submitButton.find('.submit-text');
+      const spinner = submitButton.find('.spinner-border');
+      submitText.text('Logging in...');
+      spinner.removeClass('d-none');
+
+      // Create FormData object
+      var form_data = new FormData($("#login-form")[0]);
+      form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+      // Send AJAX request
+      $.ajax({
+        url: "/master-api/user-login",
+        type: 'POST',
+        async: true,
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        success: function (response) {
+          if (response.STATUS === 'SUCCESS') {
+            // Store user ID and IS_ACTIVE in sessionStorage
+            sessionStorage.setItem('user_id', response.DATA.USER_ID);
+            sessionStorage.setItem('is_active', response.DATA.IS_ACTIVE);
+
+            Swal.fire({
+              title: 'Logged in!',
+              text: response.MESSAGE || 'You have been logged in successfully.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              window.location.href = '/';
+            });
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: response.MESSAGE || 'Login failed. Please try again.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          }
+        },
+        error: function (xhr, status, error) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'An error occurred. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        },
+        complete: function () {
+          submitText.text('Submit');
+          spinner.addClass('d-none');
+        }
+      });
+    });
+  });
+</script>
+
+
+{% endblock body %}

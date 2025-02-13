@@ -1,0 +1,222 @@
+{% extends "eduaddaWebsitePages/base.html" %}
+{% block title %}Notes{% endblock title %}
+{% block body %}
+
+<section id="">
+    <div class="container py-4">
+        <!-- Class 12th Notes -->
+        <div class="mb-5 py-3">
+            <hr class="border-2 border-black"> <!-- Black line above the heading -->
+            <div class="fs-1 fw-bold text-center">Class 12th Notes</div>
+            <hr class="border-2 border-black"> <!-- Black line below the heading -->
+        </div>
+        <div class="row">
+            {% for i in class_12th_notes %}
+            {% if i.THUMBNAIL %}
+            <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                <div class="text-center notes-link">
+                    <img src="{{ i.THUMBNAIL }}" value="{{ i.NOTES_ID }}" alt="" class="img-fluid mb-3 shadow-sm">
+                    <div class="lead fw-bold">{{ i.NAME }}</div>
+                    <div class="">{{ i.DESCRIPTION }}</div>
+                    <div class="pb-3">&#8377;{{ i.PRICE }}</div>
+                    <a href="#" class="btn btn-primary w-100" data-id="{{ i.NOTES_ID }}" data-price="{{ i.PRICE }}">Buy
+                        Now</a>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                <div class="text-center notes-link">
+                    <img src="/media/default-img.png" value="{{ i.NOTES_ID }}" alt="" class="img-fluid mb-3 shadow-sm">
+                    <div class="lead fw-bold">{{ i.NAME }}</div>
+                    <div class="">{{ i.DESCRIPTION }}</div>
+                    <div class="pb-3">&#8377;{{ i.PRICE }}</div>
+                    <a href="#" class="btn btn-primary w-100" data-id="{{ i.NOTES_ID }}" data-price="{{ i.PRICE }}">Buy
+                        Now</a>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- CUET Notes -->
+        <div class="mb-5 py-3">
+            <hr class="border-2 border-black"> <!-- Black line above the heading -->
+            <div class="fs-1 fw-bold text-center">CUET Notes</div>
+            <hr class="border-2 border-black"> <!-- Black line below the heading -->
+        </div>
+        <div class="row">
+            {% for i in cuet_notes %}
+            {% if i.THUMBNAIL %}
+            <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                <div class="text-center notes-link">
+                    <img src="{{ i.THUMBNAIL }}" value="{{ i.NOTES_ID }}" alt="" class="img-fluid mb-3 shadow-sm">
+                    <div class="lead fw-bold">{{ i.NAME }}</div>
+                    <div class="">{{ i.DESCRIPTION }}</div>
+                    <div class="pb-3">&#8377;{{ i.PRICE }}</div>
+                    <a href="#" class="btn btn-primary w-100" data-id="{{ i.NOTES_ID }}" data-price="{{ i.PRICE }}">Buy
+                        Now</a>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                <div class="text-center notes-link">
+                    <img src="/media/default-img.png" value="{{ i.NOTES_ID }}" alt="" class="img-fluid mb-3 shadow-sm">
+                    <div class="lead fw-bold">{{ i.NAME }}</div>
+                    <div class="">{{ i.DESCRIPTION }}</div>
+                    <div class="pb-3">&#8377;{{ i.PRICE }}</div>
+                    <a href="#" class="btn btn-primary w-100" data-id="{{ i.NOTES_ID }}" data-price="{{ i.PRICE }}">Buy
+                        Now</a>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.btn-primary').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                // Get the notes ID and price directly from the button's data attributes
+                const notesId = this.getAttribute('data-id');
+                const notesPrice = this.getAttribute('data-price');
+
+                // Step 1: Create Razorpay Order
+                fetch('/common-api/create-razorpay-order-notes/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ notes_id: notesId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error('Error:', data.error);
+                            alert('Failed to create Razorpay order. Please try again.');
+                            return;
+                        }
+
+                        // Step 2: Open Razorpay Checkout
+                        const options = {
+                            key: data.key,  // Razorpay Key
+                            amount: data.amount,
+                            currency: data.currency,
+                            order_id: data.order_id,
+                            name: 'Eduadda Notes Purchase',
+                            description: 'Purchase Notes',
+                            handler: function (response) {
+                                // After payment success, call the backend to save purchase
+                                savePurchase(notesId, response.razorpay_payment_id, data.order_id);
+                            },
+                            prefill: {
+                                name: 'User Name',  // Replace with real name if available
+                                email: 'user@example.com',  // Replace with real email if available
+                                contact: '9999999999'  // Replace with real contact if available
+                            },
+                            theme: {
+                                color: '#3399cc'
+                            }
+                        };
+
+                        const rzp = new Razorpay(options);
+                        rzp.open();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Payment failed. Please try again.');
+                    });
+            });
+        });
+    });
+
+    // Save Purchase to Backend
+    function savePurchase(notesId, paymentId, orderId) {
+        // Prepare form data as FormData object
+        var formData = new FormData();
+        formData.append('USER', sessionStorage.getItem('user_id'));  // User ID
+        formData.append('NOTE', notesId);  // Notes ID
+        formData.append('razorpay_order_id', orderId);  // Razorpay Order ID
+        formData.append('razorpay_payment_id', paymentId);  // Razorpay Payment ID
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');  // CSRF Token
+    
+        // Send AJAX request
+        $.ajax({
+            url: '/common-api/notes-purchase',
+            type: 'POST',
+            async: true,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                console.log(response);  // Log the response for debugging
+                if (response.STATUS === 'SUCCESS') {
+                    Swal.fire({
+                        title: 'Purchase Successful!',
+                        text: 'You have successfully purchased the notes.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.reload();  // Reload page after success
+                    });
+                } 
+                else if(response.STATUS === 'EXIST'){
+                    Swal.fire({
+                        title: 'Aleady Puchased!',
+                        text: 'You have already purchased the course.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                }else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.message || 'Failed to save purchase. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error response:', xhr.responseText);  // Log the error response
+                Swal.fire({
+                    title: 'Error!',
+                    text: xhr.responseText || 'An error occurred. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
+    
+</script>
+
+
+{% endblock body %}

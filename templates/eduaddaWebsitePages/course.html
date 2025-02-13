@@ -1,0 +1,230 @@
+{% extends "eduaddaWebsitePages/base.html" %}
+{% block title %}Course{% endblock title %}
+{% block body %}
+
+<section id="">
+    <div class="container py-4">
+        <!-- Class 12th Courses -->
+        <div class="mb-5 py-3">
+            <hr class="border-2 border-black"> <!-- Black line above the heading -->
+            <div class="fs-1 fw-bold text-center">Class 12th Courses</div>
+            <hr class="border-2 border-black"> <!-- Black line below the heading -->
+        </div>
+        <div class="row">
+            {% for i in class_12th_courses %}
+                {% if i.THUMBNAIL %}
+                    <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                        <div class="text-center course-link"> <!-- Change class name to "course-link" -->
+                            <img src="{{ i.THUMBNAIL }}" value="{{ i.COURSE_ID }}" alt="" class="img-fluid mb-3 shadow-sm">
+                            <div class="lead fw-bold">{{ i.NAME }}</div>
+                            <div class="">{{ i.DESCRIPTION }}</div>
+                            <div class="pb-3">&#8377;{{ i.PRICE }}</div>
+                            <a href="#" class="btn btn-primary w-100">Buy Now</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                        <div class="text-center course-link"> <!-- Change class name to "course-link" -->
+                            <img src="{{ i.THUMBNAIL }}" value="{{ i.COURSE_ID }}" alt="" class="img-fluid mb-3 shadow-sm">
+                            <div class="lead fw-bold">{{ i.NAME }}</div>
+                            <div class="">{{ i.DESCRIPTION }}</div>
+                            <div class="pb-3">&#8377;{{ i.PRICE }}</div>
+                            <a href="#" class="btn btn-primary w-100">Buy Now</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- CUET Courses -->
+        <div class="mb-5 py-3">
+            <hr class="border-2 border-black"> <!-- Black line above the heading -->
+            <div class="fs-1 fw-bold text-center">CUET Courses</div>
+            <hr class="border-2 border-black"> <!-- Black line below the heading -->
+        </div>
+        <div class="row">
+            {% for i in cuet_courses %}
+                {% if i.THUMBNAIL %}
+                    <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                        <div class="text-center course-link"> <!-- Change class name to "course-link" -->
+                            <img src="{{ i.THUMBNAIL }}" value="{{ i.COURSE_ID }}" alt="" class="img-fluid mb-3 shadow-sm">
+                            <div class="lead fw-bold">{{ i.NAME }}</div>
+                            <div class="">{{ i.DESCRIPTION }}</div>
+                            <div class="pb-3">&#8377;{{ i.PRICE }}</div>
+                            <a href="#" class="btn btn-primary w-100">Buy Now</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                        <div class="text-center course-link"> <!-- Change class name to "course-link" -->
+                            <img src="{{ i.THUMBNAIL }}" value="{{ i.COURSE_ID }}" alt="" class="img-fluid mb-3 shadow-sm">
+                            <div class="lead fw-bold">{{ i.NAME }}</div>
+                            <div class="">{{ i.DESCRIPTION }}</div>
+                            <div class="pb-3">&#8377;{{ i.PRICE }}</div>
+                            <a href="#" class="btn btn-primary w-100">Buy Now</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.btn-primary').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+    
+                // Get the course ID
+                const courseContainer = this.closest('.course-link');
+                const courseId = courseContainer.querySelector('img').getAttribute('value');  // Course ID
+                console.log("course", courseId)
+                // Fetch the user ID from sessionStorage
+                const userId = sessionStorage.getItem('user_id');  // Fetch the user ID
+                console.log('User ID:', userId);
+                
+                if (!userId) {
+                    alert('User not logged in. Please log in first.');
+                    return; // Stop the payment process if user is not logged in
+                }
+    
+                // Step 1: Create Razorpay Order
+                fetch('/common-api/create-razorpay-order/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ course_id: courseId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                        return;
+                    }
+    
+                    // Ensure we have all necessary data for the payment
+                    const orderId = data.order_id;  // Razorpay Order ID
+                    const paymentAmount = data.amount;  // Amount in paise
+                    const paymentCurrency = data.currency;  // Currency (INR)
+    
+                    // Step 2: Open Razorpay Checkout
+                    const options = {
+                        key: data.key,  // Razorpay Key
+                        amount: paymentAmount,
+                        currency: paymentCurrency,
+                        order_id: orderId,
+                        name: 'Eduadda Course Purchase',
+                        description: 'Purchase Course',
+                        handler: function (response) {
+                            // Step 3: Save the Purchase (after payment successful)
+                            console.log(userId, courseId, orderId, response.razorpay_payment_id)
+                            savePurchase(userId, courseId, orderId, response.razorpay_payment_id);
+                        },
+                        prefill: {
+                            name: 'User Name',  // Replace with real name if available
+                            email: 'user@example.com',  // Replace with real email if available
+                            contact: '9999999999'  // Replace with real contact if available
+                        },
+                        theme: {
+                            color: '#3399cc'
+                        }
+                    };
+    
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Payment failed. Please try again.');
+                });
+            });
+        });
+    
+        // Save Purchase to Backend using AJAX
+        function savePurchase(userId, courseId, orderId, paymentId) {
+            // Prepare form data as FormData object
+            var formData = new FormData();
+            formData.append('USER', userId);  // User ID
+            formData.append('COURSE', courseId);  // Course ID
+            formData.append('razorpay_order_id', orderId);  // Razorpay Order ID
+            formData.append('razorpay_payment_id', paymentId);  // Razorpay Payment ID
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');  // CSRF Token
+    
+            // Send AJAX request
+            $.ajax({
+                url: '/common-api/course-purchase',
+                type: 'POST',
+                async: true,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    console.log(response);  // Log the response for debugging
+                    if (response.STATUS == 'SUCCESS') {
+                        Swal.fire({
+                            title: 'Purchase Successful!',
+                            text: 'You have successfully purchased the course.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.reload();  // Reload page after success
+                        });
+                    } else if (response.STATUS == 'EXIST'){
+                        Swal.fire({
+                            title: 'Aleady Puchased!',
+                            text: 'You have already purchased the course.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.reload();  // Reload page after success
+                        });
+                    }else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.message || 'Failed to save purchase. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error response:', xhr.responseText);  // Log the error response
+                    Swal.fire({
+                        title: 'Error!',
+                        text: xhr.responseText || 'An error occurred. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
+    });
+    
+    
+</script>
+
+{% endblock body %}

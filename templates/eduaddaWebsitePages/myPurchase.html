@@ -1,0 +1,50 @@
+{% extends "eduaddaWebsitePages/base.html" %}
+{% block title %}My Purchases{% endblock title %}
+{% block body %}
+
+<section id="my-purchases">
+    <div class="container py-4">
+        <!-- Purchased Courses -->
+        <div class="mb-5 py-3">
+            <hr class="border-2 border-black">
+            <div class="fs-1 fw-bold text-center">Purchased Courses</div>
+            <hr class="border-2 border-black">
+        </div>
+        <div class="row">
+            {% for course in purchased_courses %}
+            <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                <div class="text-center notes-link">
+                    <img src="{{ course.THUMBNAIL }}" alt="{{ course.NAME }}" class="img-fluid mb-3 shadow-sm">
+                    <div class="lead fw-bold">{{ course.NAME }}</div>
+                    <div class="py-1">{{ course.DESCRIPTION }}</div>
+                    <!-- Watch Now button -->
+                    <a href="{{ course.VIDEO }}" target="_blank" class="btn btn-primary w-100">Watch Now</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Purchased Notes (This section can be removed if you don't want notes) -->
+        <div class="mb-5 py-3">
+            <hr class="border-2 border-black">
+            <div class="fs-1 fw-bold text-center">Purchased Notes</div>
+            <hr class="border-2 border-black">
+        </div>
+        <div class="row">
+            {% for i in purchased_notes %}
+            <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0 pt-3">
+                <div class="text-center notes-link">
+                    <img src="{{ i.THUMBNAIL|default:'/media/default-img.png' }}" alt="{{ i.NAME }}"
+                        class="img-fluid mb-3 shadow-sm">
+                    <div class="lead fw-bold">{{ i.NAME }}</div>
+                    <div class="py-1">{{ i.DESCRIPTION }}</div>
+                    <!-- Download Now button -->
+                    <a href="{{ i.PDF }}" download class="btn btn-primary w-100">Download Now</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock body %}

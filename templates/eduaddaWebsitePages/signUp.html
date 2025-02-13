@@ -1,0 +1,126 @@
+{% extends "eduaddaWebsitePages/base.html" %}
+{% block title %}Sign Up{% endblock title %}
+{% block body %}
+
+<div class="container p-5">
+    <div class="container-fluid py-5 rounded" id="login-signup">
+        <div class="row align-items-center">
+            <!-- Image in the first column -->
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <img src="/media/website/websiteLogo.jpg" alt="Placeholder Image" class="img-fluid rounded form-image">
+            </div>
+
+            <!-- Form in the second column -->
+            <div class="col-md-6">
+                <form class="text-light bg-light p-5" id="register-form" enctype="multipart/form-data">
+                    <!-- Name Field -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="NAME" name="NAME" placeholder="Enter your name" required>
+                        <label for="name">Name</label>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="EMAIL" name="EMAIL" placeholder="Enter your email" required>
+                        <label for="email">Email</label>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="PASSWORD" name="PASSWORD" placeholder="Enter your password" required>
+                        <label for="password">Password</label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn w-100 btn-submit" id="btnn">
+                        <span class="submit-text">Sign Up</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                    <p class="text-dark text-center pt-3 fs-5">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        // Attach the form submission handler
+        $('#register-form').on('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Show loading spinner
+            const submitButton = $('#btnn');
+            const submitText = submitButton.find('.submit-text');
+            const spinner = submitButton.find('.spinner-border');
+            submitText.text('Signing up...');
+            spinner.removeClass('d-none');
+
+            // Create FormData object
+            var form_data = new FormData($("#register-form")[0]);
+
+            // Add CSRF token to the FormData
+            form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+            // Send AJAX request
+            $.ajax({
+                url: "/master-api/user-register", // Your API endpoint
+                type: 'POST',
+                async: true,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,
+                success: function (response) {
+                    if (response.STATUS === 'SUCCESS') {
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.MESSAGE || 'You have been registered successfully.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            // Redirect to the login page
+                            window.location.href = "{% url 'login' %}";
+                        });
+                    } else {
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.MESSAGE || 'Registration failed. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Show error message for AJAX failure
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'An error occurred. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                complete: function () {
+                    // Reset button state
+                    submitText.text('Sign Up');
+                    spinner.addClass('d-none');
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock body %}

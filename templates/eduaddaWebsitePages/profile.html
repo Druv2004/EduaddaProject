@@ -1,0 +1,228 @@
+{% extends "eduaddaWebsitePages/base.html" %}
+{% block title %}Profile{% endblock title %}
+{% block body %}
+
+<div class="container">
+    <!-- Profile Header -->
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <!-- Profile Picture -->
+            <img src="{{ user_data.profile_picture_url|default:'/media/website/profile.jpg' }}" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 200px; height: 200px; border: 5px solid white;">
+            <!-- User Name -->
+            <h1 class="display-5 fw-bold" id="user-name">Loading...</h1>
+            <!-- Update Button -->
+            <button class="btn btn-dark mt-3" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
+                <i class="fas fa-edit me-2"></i>Update Profile
+            </button>
+        </div>
+    </div>
+
+    <!-- Profile Details -->
+    <div class="row mt-4">
+        <!-- Personal Info Card -->
+        <div class="col-md-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold"><i class="fas fa-user me-2"></i>Personal Information</h5>
+                    <hr>
+                    <p class="card-text"><strong>Email:</strong> <span id="user-email">Loading...</span></p>
+                    <p class="card-text"><strong>Member Since:</strong> <span id="member-since">Loading...</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Purchased Courses and Notes Card -->
+        {% comment %} <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold"><i class="fas fa-shopping-cart me-2"></i>Purchased Items</h5>
+                    <hr>
+                    <p class="card-text"><strong>Courses Purchased:</strong> <span id="courses-purchased">Loading...</span></p>
+                    <p class="card-text"><strong>Notes Purchased:</strong> <span id="notes-purchased">Loading...</span></p>
+                </div>
+            </div>
+        </div> {% endcomment %}
+    </div>
+
+    <!-- Additional Info -->
+    <div class="row mt-4 pb-5">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold"><i class="fas fa-info-circle me-2"></i>About Me</h5>
+                    <hr>
+                    <p class="card-text" id="about-me">No information available.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Profile Modal -->
+<div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProfileModalLabel">Update Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateProfileForm">
+                    <!-- Name Field -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="update-name" placeholder="Enter your name" required>
+                        <label for="update-name">Name</label>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="update-email" placeholder="Enter your email" required>
+                        <label for="update-email">Email</label>
+                    </div>
+
+                    <!-- About Me Field -->
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="update-about-me" placeholder="Enter about yourself" style="height: 100px;"></textarea>
+                        <label for="update-about-me">About Me</label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-dark w-100">
+                        <span class="submit-text">Save Changes</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function fetchUserProfile(userId) {
+        try {
+            const response = await fetch('/master-api/user-profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token for security
+                },
+                body: JSON.stringify({
+                    USER_ID: userId,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch user profile');
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+            return null;
+        }
+    }
+
+    async function loadProfile() {
+        const userId = sessionStorage.getItem('user_id'); // Retrieve USER_ID from sessionStorage
+        if (!userId) {
+            window.location.href = '/login';  // Redirect to login if USER_ID is not found
+            return;
+        }
+
+        const userData = await fetchUserProfile(userId);
+        if (userData && userData.STATUS === 'SUCCESS') {
+            // Update the DOM with user details
+            document.getElementById('user-name').textContent = userData.DATA.NAME || 'N/A';
+            document.getElementById('user-email').textContent = userData.DATA.EMAIL || 'N/A';
+            document.getElementById('member-since').textContent = new Date(userData.DATA.PR_CREATED_AT).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+            });
+            document.getElementById('about-me').textContent = userData.DATA.ABOUT_ME || 'No information available.';
+            {% comment %} document.getElementById('courses-purchased').textContent = userData.DATA.COURSES_PURCHASED || '0';
+            document.getElementById('notes-purchased').textContent = userData.DATA.NOTES_PURCHASED || '0'; {% endcomment %}
+
+            // Pre-fill the update form with current data
+            document.getElementById('update-name').value = userData.DATA.NAME || '';
+            document.getElementById('update-email').value = userData.DATA.EMAIL || '';
+            document.getElementById('update-about-me').value = userData.DATA.ABOUT_ME || '';
+        } else {
+            alert('Failed to load user profile. Please try again.');
+        }
+    }
+
+    // Handle update profile form submission
+    document.getElementById('updateProfileForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const submitButton = this.querySelector('button[type="submit"]');
+        const submitText = submitButton.querySelector('.submit-text');
+        const spinner = submitButton.querySelector('.spinner-border');
+
+        // Show loading state
+        submitText.textContent = 'Saving...';
+        spinner.classList.remove('d-none');
+
+        const userId = sessionStorage.getItem('user_id');
+        const updatedData = {
+            USER_ID: userId,
+            NAME: document.getElementById('update-name').value,
+            EMAIL: document.getElementById('update-email').value,
+            ABOUT_ME: document.getElementById('update-about-me').value,
+        };
+
+        try {
+            const response = await fetch('/master-api/user-profile-update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify(updatedData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update profile');
+            }
+
+            const data = await response.json();
+            if (data.STATUS === 'SUCCESS') {
+                // Reload profile data after successful update
+                await loadProfile();
+                // Close the modal
+                bootstrap.Modal.getInstance(document.getElementById('updateProfileModal')).hide();
+                // Show success message
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Profile updated successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                }).then(() => {
+                    // Redirect to /profile after the user clicks "OK"
+                    window.location.href = '/profile';
+                });
+
+                
+            } else {
+                throw new Error(data.MESSAGE || 'Failed to update profile');
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'Error!',
+                text: error.message || 'Failed to update profile. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+        } finally {
+            // Reset button state
+            submitText.textContent = 'Save Changes';
+            spinner.classList.add('d-none');
+        }
+    });
+
+    // Call the function when the page loads
+    window.onload = loadProfile;
+</script>
+
+{% endblock body %}

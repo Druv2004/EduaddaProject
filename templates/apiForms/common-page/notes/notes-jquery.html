@@ -1,0 +1,368 @@
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+<!-- CALLABLE FUNCTION HERE -->
+<script>
+    $(document).ready(function(){
+        var data_id = $('#NOTES_ID').val();
+        
+        if (data_id != ''){
+            populateNotesData(data_id);
+        }else{
+            document.getElementById('thumbnail-file').src = '/media/default-img.png';
+        }
+    });
+</script>
+
+<!--WEBSITE BANNER DATA SUBMIT FUNCTION HERE -->
+<script>
+    function notesDataSubmit(){
+        
+        var name = $("#NAME").val();
+        var thumbnail = $("#THUMBNAIL").val();
+        var pdf = $("#PDF").val();
+        var price = $("#PRICE").val();
+        var category = $("#CATEGORY").val();
+        var status = $("#PR_STATUS").val();
+        
+        var form_data = new FormData($("#notes-form")[0]);
+        
+        if (!$.trim(name)){
+            toastr.error('Please select name!!');
+            return false;
+        }else if (!$.trim(price)){
+            toastr.error('Please enter price!!');
+            return false;
+        }else if (!$.trim(category)){
+            toastr.error('Please select category!!');
+            return false;
+        }else if (!$.trim(status)){
+            toastr.error('Please select status !!');
+            return false;
+        }else if (!$.trim(thumbnail)){
+            toastr.error('Please upload thumbnail image!!');
+            return false;
+        } else if (!$.trim(pdf)){
+            toastr.error('Please upload pdf!!');
+            return false;
+        }
+        
+        $.ajax({
+            url: "/common-api/notes-add",
+            type: 'post',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == 'SUCCESS'){
+                    document.getElementById("notes-form").reset();
+                    swal('', response.MESSAGE, 'success');
+                    return true;
+                } else {
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+
+<!-- POPULATE WEBSITE BANNER DATA FUNCTION HERE -->
+<script>
+    function populateNotesData(id){
+
+        $.ajax({
+            url: "/common-api/notes-list",
+            type: 'post',
+            
+            data: {'NOTES_ID': id},
+            success: function(response){
+                if (response.STATUS == "SUCCESS"){
+                    var dt = response.DATA;
+                    
+                    $("#NAME").val(dt.NAME);
+                    $("#DESCRIPTION").val(dt.DESCRIPTION);
+                    $("#PRICE").val(dt.PRICE);
+                    $("#CATEGORY").val(dt.CATEGORY);
+                    $("#PR_STATUS").val(dt.PR_STATUS);
+                    $("#THUMBNAIL").val(dt.THUMBNAIL);
+                    $("#PDF").val(dt.PDF);
+                    if (dt.THUMBNAIL != ''){
+                        document.getElementById('thumbnail-file').src = dt.THUMBNAIL;
+                    }else{
+                        document.getElementById('thumbnail-file').src = '/media/default-img.png';
+                    }
+                    if (dt.PDF != ''){
+                        $("#pdf-file").show();
+                        $("#pdf-file").attr('href', dt.PR_PDF_FILE);
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+<!--WEBSITE BANNER DATA UPDATE FUNCTION HERE -->
+<script>
+    function notesDataUpdate(){
+        
+        var name = $("#NAME").val();
+        var thumbnail = $("#THUMBNAIL").val();
+        var pdf = $("#PDF").val();
+        var category = $("#CATEGORY").val();
+        var status = $("#PR_STATUS").val();
+        var price = $("#PRICE").val();
+        
+        var form_data = new FormData($("#notes-form")[0]);
+        
+        if (!$.trim(name)){
+            toastr.error('Please select name!!');
+            return false;
+        }else if (!$.trim(price)){
+            toastr.error('Please enter price!!');
+            return false;
+        }else if (!$.trim(category)){
+            toastr.error('Please select category!!');
+            return false;
+        }else if (!$.trim(status)){
+            toastr.error('Please select status !!');
+            return false;
+        }else if (!$.trim(thumbnail)){
+            toastr.error('Please upload thumbnail image!!');
+            return false;
+        } else if (!$.trim(pdf)){
+            toastr.error('Please upload pdf!!');
+            return false;
+        }
+        
+        $.ajax({
+            url: "/common-api/notes-update",
+            type: 'post',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == 'SUCCESS'){
+                    swal('', response.MESSAGE, 'success');
+                    return true;
+                }else {
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    function uploadThumbnailModal() {
+        $('#upload-data-modal').modal('show');
+        $('#modal-title').text('Upload Thumbnail');
+        $('#note-msg').text('Note: File format must be JPG, JPEG, PNG, or GIF. Maximum size is 10 MB.');
+        $('#PR_FILE').val('');
+        $('#PR_FILE').attr('accept', 'image/png, image/jpeg, image/jpg, image/gif');
+    }
+    
+    function uploadPdfModal() {
+        $('#upload-data-modal').modal('show');
+        $('#modal-title').text('Upload PDF');
+        $('#note-msg').text('Note: File format must be PDF. Maximum size is 100 MB.');
+        $('#PR_FILE').val('');
+        $('#PR_FILE').attr('accept', 'application/pdf');
+    }
+    
+    function uploadDataSubmit() {
+        var file_data = $('#PR_FILE').val();
+    
+        if (!$.trim(file_data)) {
+            toastr.error('Please choose a file!');
+            return false;
+        }
+    
+        var ext = file_data.split('.').pop().toLowerCase();
+        var file_size = $('#PR_FILE')[0].files[0].size / 1024 / 1024; // File size in MB
+    
+        if ($('#PR_FILE').attr('accept').includes('image') && $.inArray(ext, ['png', 'jpg', 'jpeg', 'gif']) == -1) {
+            toastr.error('File format must be JPG, JPEG, PNG, or GIF!');
+            return false;
+        } else if ($('#PR_FILE').attr('accept') === 'application/pdf' && ext !== 'pdf') {
+            toastr.error('File format must be PDF!');
+            return false;
+        } else if (($('#PR_FILE').attr('accept').includes('image') && file_size > 10) || 
+                   ($('#PR_FILE').attr('accept') === 'application/pdf' && file_size > 100)) {
+            toastr.error('File size exceeds the maximum allowed limit!');
+            return false;
+        }
+    
+        var form_data = new FormData($("#upload-data-form")[0]);
+        
+        $.ajax({
+            url: "/common-api/file-data-upload",
+            type: 'post',
+            csrftoken: '{{ csrf_token }}',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response) {
+                if (response.STATUS == "SUCCESS") {
+                    var file_path = response.DATA.PR_FILE;
+    
+                    if ($('#PR_FILE').attr('accept').includes('image')) {
+                        $('#THUMBNAIL').val(file_path);
+                        $('#thumbnail-file').attr('src', file_path).show();
+                    } else if ($('#PR_FILE').attr('accept') === 'application/pdf') {
+                        $('#PDF').val(file_path);
+                        $('#pdf-file').attr('href', file_path).show();
+                    }
+    
+                    $('#upload-data-modal').modal('hide');
+                    document.getElementById("upload-data-form").reset();
+                } else {
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- UPLOAD DATA FUNCTION HERE -->
+{% comment %} <script>
+    function uploadDataModal(){
+        $('#upload-data-modal').modal('show');
+        $('#modal-title').text('Banner file upload');
+        $('#note-msg').text('Note:- File format must be JPG, JPEG, PNG,GIF or mp4.');
+    }
+
+    function uploadDataSubmit(){
+        var file_data = $('#PR_FILE').val();
+
+        if (!$.trim(file_data)){
+            toastr.error('Please choose file!!');
+            return false;
+        }
+
+        var ext = file_data.split('.').pop().toLowerCase();
+        var file_size = $('#PR_FILE')[0].files[0].size / 1024 / 1024; 
+        
+        if ($.inArray(ext, ['png', 'jpg', 'jpeg', 'mp4']) == -1){
+	        toastr.error('File format must be JPG, JPEG, PNG,GIF or mp4!!');
+            return false;
+	    } else if (file_size > 10) {  
+            toastr.error("File size must be less than 10 MB!!"); 
+            return false; 
+        }
+
+        var form_data = new FormData($("#upload-data-form")[0]);
+        
+        $.ajax({
+            url: "/common-api/file-data-upload",
+            type: 'post',
+            csrftoken: '{{ csrf_token }}',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == "SUCCESS"){
+                    var file_path = response.DATA.PR_FILE;
+                    $('#upload-data-modal').modal('hide');
+                    $("#PR_IMAGE").val(file_path);
+                    document.getElementById('banner-file').src = file_path;
+                    document.getElementById("upload-data-form").reset();
+                }else{
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script> {% endcomment %}
+
+
+
+<!-- UPLOAD DATA FUNCTION HERE -->
+{% comment %} <script>
+    function uploadPdfDataModal(){
+        $('#import-btn').hide();
+        $('#download-btn').hide();
+        $('#img-btn').show();
+        $('#upload-data-modal').modal('show');
+        $('#modal-title').text('Upload pdf file');
+        $('#note-msg').text('Note:- File format must be pdf.');
+    }
+
+    function uploadDataSubmit(){
+        var file_data = $('#PR_FILE').val();
+
+        if (!$.trim(file_data)){
+            toastr.error('Please choose file!!');
+            return false;
+        }
+
+        var ext = file_data.split('.').pop().toLowerCase();
+        var file_size = $('#PR_FILE')[0].files[0].size / 1024 / 1024; 
+        
+        if ($.inArray(ext, ['pdf']) == -1){
+	        toastr.error('File format must be pdf!!');
+            return false;
+	    } else if (file_size > 1000) {  
+            toastr.error("File size must be less than 100 MB!!"); 
+            return false; 
+        }
+
+        var form_data = new FormData($("#upload-data-form")[0]);
+        
+        $.ajax({
+            url: "/common-api/file-data-upload",
+            type: 'post',
+            csrftoken: '{{ csrf_token }}',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == "SUCCESS"){
+                    var file_path = response.DATA.PR_FILE;
+                    $('#upload-data-modal').modal('hide');
+                    $("#PDF").val(file_path)
+                    $("#pdf-file").show();
+                    $("#pdf-file").attr('href', file_path);
+                    document.getElementById("upload-data-form").reset();
+                }else{
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script> {% endcomment %}

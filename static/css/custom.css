@@ -1,0 +1,341 @@
+#navbarBg {
+    background-color: rgb(0, 0, 0);
+}
+
+#login-signup {
+    background-color: rgb(0, 0, 0);
+}
+
+
+
+#container-bg{
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+
+
+/* Ensure the card content stays inside */
+.course-link {
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncate overflowing text with "..." */
+    white-space: nowrap; /* Prevent text from wrapping */
+    width: 100%; /* Make the content fit within the card */
+}
+
+.course-link div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* Ensure the card content stays inside */
+.courses-link {
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncate overflowing text with "..." */
+    white-space: nowrap; /* Prevent text from wrapping */
+    width: 100%; /* Make the content fit within the card */
+}
+
+.courses-link div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* Ensure the card content stays inside */
+.notes-link {
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncate overflowing text with "..." */
+    white-space: nowrap; /* Prevent text from wrapping */
+    width: 100%; /* Make the content fit within the card */
+}
+
+.notes-link div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* For multi-line text wrapping */
+.course-link .description {
+    white-space: normal; /* Allow wrapping for description */
+    overflow: hidden;
+    display: -webkit-box; /* Use box model for truncation */
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+/* Style for the card */
+.course-link {
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    border-radius: 8px; /* Optional: rounded corners */
+    padding: 15px; /* Optional: padding for inner content */
+}
+
+/* Hover effect for the card */
+.course-link:hover {
+    background-color: #ffffff; /* Change card background color to white */
+    transform: translateY(-5px); /* Lift the card slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+/* Optional: Style for card text on hover (optional) */
+.course-link:hover {
+    color: #000000; /* Change title color on hover */
+}
+/* For multi-line text wrapping */
+.courses-link .description {
+    white-space: normal; /* Allow wrapping for description */
+    overflow: hidden;
+    display: -webkit-box; /* Use box model for truncation */
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+/* Style for the card */
+.courses-link {
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    border-radius: 8px; /* Optional: rounded corners */
+    padding: 15px; /* Optional: padding for inner content */
+}
+
+/* Hover effect for the card */
+.courses-link:hover {
+    background-color: #000000; /* Change card background color to white */
+    transform: translateY(-5px); /* Lift the card slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+/* Optional: Style for card text on hover (optional) */
+.courses-link:hover {
+    color: #ffffff; /* Change title color on hover */
+}
+
+/* Style for the card */
+.notes-link {
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    border-radius: 8px; /* Optional: rounded corners */
+    padding: 15px; /* Optional: padding for inner content */
+}
+
+/* Hover effect for the card */
+.notes-link:hover {
+    background-color: #010000; /* Change card background color to white */
+    transform: translateY(-5px); /* Lift the card slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+/* Optional: Style for card text on hover (optional) */
+.notes-link:hover {
+    color: #ffffff; /* Change title color on hover */
+}
+
+/* Custom CSS for Explore Courses Section */
+#explore-courses {
+    background: rgb(0, 0, 0);
+    color: white;
+  }
+  
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px; /* Rounded corners */
+  }
+  
+  .card:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Shadow on hover */
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  .btn-primary {
+    background-color: #000001;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #000000;
+  }
+
+/* Custom CSS for Why Eduadda Section */
+.why-eduadda .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .why-eduadda .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .testimonial {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 10px;
+  }
+
+#carouselContainer {
+    height: 50vh; /* 50% of the viewport height */
+}
+
+/* Ensure images fill the container without distortion */
+#carouselContainer .carousel-item img {
+    height: 100%; /* Fill the height of the container */
+    width: 100%; /* Maintain the width */
+    object-fit: cover; /* Scale the image while preserving aspect ratio */
+}
+
+
+
+
+
+
+
+/* LOGIN CSS */
+
+/* Custom CSS for Interactive Form */
+.form-floating input {
+    background-color: #000000; /* Dark input background */
+    color: rgb(255, 255, 255); /* White text */
+    border: 1px solid #ffffff; /* Light border */
+    transition: all 0.3s ease; /* Smooth transition */
+  }
+  
+  .form-floating input:focus {
+    background-color: #000000; /* Slightly lighter background on focus */
+    border-color: #ffffff; /* Highlight border on focus */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Glow effect on focus */
+  }
+  
+  .form-floating label {
+    color: #ffffff; /* Light gray label text */
+  }
+  
+  .form-floating input:focus + label {
+    color: #ffffff; /* Highlight label on focus */
+  }
+  
+  .btn-submit {
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  #btnn {
+    background-color: #000000;
+    color: white;
+  }
+  
+  .btn-submit:hover {
+    background-color: #000000; /* Light gray background on hover */
+    color: #ffffff; /* Black text on hover */
+  }
+  
+  .btn-submit .spinner-border {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .btn-submit.loading .submit-text {
+    visibility: hidden; /* Hide text when loading */
+  }
+  
+  .btn-submit.loading .spinner-border {
+    display: inline-block !important; /* Show spinner when loading */
+  }
+
+
+/* Custom CSS for Image and Form */
+#login-signup {
+    background-color: #000000; /* Dark background for the container */
+    padding: 2rem; /* Add padding for better spacing */
+  }
+  
+  .form-image {
+    max-width: 100%; /* Ensure the image doesn't exceed its container */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 400px; /* Set a maximum height for the image */
+    object-fit: cover; /* Ensure the image covers the area without distortion */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .form-image {
+      max-height: 300px; /* Reduce image height on smaller screens */
+    }
+  
+    #login-signup {
+      padding: 1rem; /* Reduce padding on smaller screens */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .form-image {
+      max-height: 200px; /* Further reduce image height on very small screens */
+    }
+  }
+
+
+
+
+
+
+/* PROFILE */
+
+/* Custom CSS for Profile Page */
+.cover-image {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-picture {
+  position: relative;
+  z-index: 2;
+  margin-top: -75px;
+  border: 5px solid white;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  color: #0d6efd; /* Bootstrap primary color */
+}
+
+.card-text {
+  color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-picture {
+      width: 120px;
+      height: 120px;
+      margin-top: -60px;
+  }
+
+  .cover-image {
+      height: 150px;
+  }
+
+  h1.display-5 {
+      font-size: 2rem;
+  }
+}

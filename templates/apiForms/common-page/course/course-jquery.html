@@ -1,0 +1,370 @@
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+<!-- CALLABLE FUNCTION HERE -->
+<script>
+    $(document).ready(function(){
+        var data_id = $('#COURSE_ID').val();
+        
+        if (data_id != ''){
+            populateCourseData(data_id);
+        }else{
+            document.getElementById('thumbnail-file').src = '/media/default-img.png';
+        }
+    });
+</script>
+
+<!--WEBSITE BANNER DATA SUBMIT FUNCTION HERE -->
+<script>
+    function courseDataSubmit(){
+        
+        var name = $("#NAME").val();
+        var thumbnail = $("#THUMBNAIL").val();
+        var video = $("#VIDEO").val();
+        var category = $("#CATEGORY").val();
+        var status = $("#PR_STATUS").val();
+        var price = $("#PRICE").val();
+        
+        var form_data = new FormData($("#course-form")[0]);
+        
+        if (!$.trim(name)){
+            toastr.error('Please select name!!');
+            return false;
+        }else if (!$.trim(price)){
+            toastr.error('Please enter price!!');
+            return false;
+        }else if (!$.trim(category)){
+            toastr.error('Please select category!!');
+            return false;
+        }else if (!$.trim(status)){
+            toastr.error('Please select status !!');
+            return false;
+        }else if (!$.trim(thumbnail)){
+            toastr.error('Please upload thumbnail image!!');
+            return false;
+        } else if (!$.trim(video)){
+            toastr.error('Please upload video!!');
+            return false;
+        }
+        
+        $.ajax({
+            url: "/common-api/course-add",
+            type: 'post',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == 'SUCCESS'){
+                    document.getElementById("course-form").reset();
+                    swal('', response.MESSAGE, 'success');
+                    return true;
+                } else {
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+
+<!-- POPULATE WEBSITE BANNER DATA FUNCTION HERE -->
+<script>
+    function populateCourseData(id){
+
+        $.ajax({
+            url: "/common-api/course-list",
+            type: 'post',
+            
+            data: {'COURSE_ID': id},
+            success: function(response){
+                if (response.STATUS == "SUCCESS"){
+                    var dt = response.DATA;
+                    
+                    $("#NAME").val(dt.NAME);
+                    $("#DESCRIPTION").val(dt.DESCRIPTION);
+                    $("#PRICE").val(dt.PRICE);
+                    $("#CATEGORY").val(dt.CATEGORY);
+                    $("#PR_STATUS").val(dt.PR_STATUS);
+                    $("#THUMBNAIL").val(dt.THUMBNAIL);
+                    $("#VIDEO").val(dt.VIDEO);
+                    if (dt.THUMBNAIL != ''){
+                        document.getElementById('thumbnail-file').src = dt.THUMBNAIL;
+                    }else{
+                        document.getElementById('thumbnail-file').src = '/media/default-img.png';
+                    }
+                    if (dt.PDF != ''){
+                        $("#video-file").show();
+                        $("#video-file").attr('href', dt.VIDEO);
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+<!--WEBSITE BANNER DATA UPDATE FUNCTION HERE -->
+<script>
+    function courseDataUpdate(){
+        
+        var name = $("#NAME").val();
+        var thumbnail = $("#THUMBNAIL").val();
+        var video = $("#VIDEO").val();
+        var category = $("#CATEGORY").val();
+        var price = $("#PRICE").val();
+        var status = $("#PR_STATUS").val();
+
+        
+        
+        var form_data = new FormData($("#course-form")[0]);
+        
+        if (!$.trim(name)){
+            toastr.error('Please select name!!');
+            return false;
+        }else if (!$.trim(price)){
+            toastr.error('Please enter price!!');
+            return false;
+        }else if (!$.trim(category)){
+            toastr.error('Please select category!!');
+            return false;
+        }else if (!$.trim(status)){
+            toastr.error('Please select status !!');
+            return false;
+        }else if (!$.trim(thumbnail)){
+            toastr.error('Please upload thumbnail image!!');
+            return false;
+        } else if (!$.trim(video)){
+            toastr.error('Please upload video!!');
+            return false;
+        }
+        
+        $.ajax({
+            url: "/common-api/course-update",
+            type: 'post',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == 'SUCCESS'){
+                    swal('', response.MESSAGE, 'success');
+                    return true;
+                }else {
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    function uploadThumbnailModal() {
+        $('#upload-data-modal').modal('show');
+        $('#modal-title').text('Upload Thumbnail');
+        $('#note-msg').text('Note: File format must be JPG, JPEG, PNG, or GIF. Maximum size is 10 MB.');
+        $('#PR_FILE').val('');
+        $('#PR_FILE').attr('accept', 'image/png, image/jpeg, image/jpg, image/gif');
+    }
+    
+    function uploadVideoModal() {
+        $('#upload-data-modal').modal('show');
+        $('#modal-title').text('Upload Video');
+        $('#note-msg').text('Note: File format must be MP4, AVI, MKV, or MOV. Maximum size is 2 GB.');
+        $('#PR_FILE').val('');
+        $('#PR_FILE').attr('accept', 'video/mp4, video/x-m4v, video/*');
+    }
+    
+    function uploadDataSubmit() {
+        var file_data = $('#PR_FILE').val();
+    
+        if (!$.trim(file_data)) {
+            toastr.error('Please choose a file!');
+            return false;
+        }
+    
+        var ext = file_data.split('.').pop().toLowerCase();
+        var file_size = $('#PR_FILE')[0].files[0].size / 1024 / 1024; // File size in MB
+    
+        if ($('#PR_FILE').attr('accept').includes('image') && $.inArray(ext, ['png', 'jpg', 'jpeg', 'gif']) == -1) {
+            toastr.error('File format must be JPG, JPEG, PNG, or GIF!');
+            return false;
+        }else if ($('#PR_FILE').attr('accept').includes('video') && $.inArray(ext, ['mp4', 'avi', 'mkv', 'mov']) == -1) {
+            toastr.error('File format must be MP4, AVI, MKV, or MOV!');
+            return false;
+        } else if (($('#PR_FILE').attr('accept').includes('image') && file_size > 10) || 
+            ($('#PR_FILE').attr('accept').includes('video') && file_size > 2048)) {
+            toastr.error('File size exceeds the maximum allowed limit!');
+            return false;
+        }
+    
+        var form_data = new FormData($("#upload-data-form")[0]);
+        
+        $.ajax({
+            url: "/common-api/file-data-upload",
+            type: 'post',
+            csrftoken: '{{ csrf_token }}',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response) {
+                if (response.STATUS == "SUCCESS") {
+                    var file_path = response.DATA.PR_FILE;
+    
+                    if ($('#PR_FILE').attr('accept').includes('image')) {
+                        $('#THUMBNAIL').val(file_path);
+                        $('#thumbnail-file').attr('src', file_path).show();
+                    } else if ($('#PR_FILE').attr('accept').includes('video')) {
+                        $('#VIDEO').val(file_path);
+                        $('#video-file').attr('src', file_path).show();
+                    }
+    
+                    $('#upload-data-modal').modal('hide');
+                    document.getElementById("upload-data-form").reset();
+                } else {
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- UPLOAD DATA FUNCTION HERE -->
+{% comment %} <script>
+    function uploadDataModal(){
+        $('#upload-data-modal').modal('show');
+        $('#modal-title').text('Banner file upload');
+        $('#note-msg').text('Note:- File format must be JPG, JPEG, PNG,GIF or mp4.');
+    }
+
+    function uploadDataSubmit(){
+        var file_data = $('#PR_FILE').val();
+
+        if (!$.trim(file_data)){
+            toastr.error('Please choose file!!');
+            return false;
+        }
+
+        var ext = file_data.split('.').pop().toLowerCase();
+        var file_size = $('#PR_FILE')[0].files[0].size / 1024 / 1024; 
+        
+        if ($.inArray(ext, ['png', 'jpg', 'jpeg', 'mp4']) == -1){
+	        toastr.error('File format must be JPG, JPEG, PNG,GIF or mp4!!');
+            return false;
+	    } else if (file_size > 10) {  
+            toastr.error("File size must be less than 10 MB!!"); 
+            return false; 
+        }
+
+        var form_data = new FormData($("#upload-data-form")[0]);
+        
+        $.ajax({
+            url: "/common-api/file-data-upload",
+            type: 'post',
+            csrftoken: '{{ csrf_token }}',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == "SUCCESS"){
+                    var file_path = response.DATA.PR_FILE;
+                    $('#upload-data-modal').modal('hide');
+                    $("#PR_IMAGE").val(file_path);
+                    document.getElementById('banner-file').src = file_path;
+                    document.getElementById("upload-data-form").reset();
+                }else{
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script> {% endcomment %}
+
+
+
+<!-- UPLOAD DATA FUNCTION HERE -->
+{% comment %} <script>
+    function uploadPdfDataModal(){
+        $('#import-btn').hide();
+        $('#download-btn').hide();
+        $('#img-btn').show();
+        $('#upload-data-modal').modal('show');
+        $('#modal-title').text('Upload pdf file');
+        $('#note-msg').text('Note:- File format must be pdf.');
+    }
+
+    function uploadDataSubmit(){
+        var file_data = $('#PR_FILE').val();
+
+        if (!$.trim(file_data)){
+            toastr.error('Please choose file!!');
+            return false;
+        }
+
+        var ext = file_data.split('.').pop().toLowerCase();
+        var file_size = $('#PR_FILE')[0].files[0].size / 1024 / 1024; 
+        
+        if ($.inArray(ext, ['pdf']) == -1){
+	        toastr.error('File format must be pdf!!');
+            return false;
+	    } else if (file_size > 1000) {  
+            toastr.error("File size must be less than 100 MB!!"); 
+            return false; 
+        }
+
+        var form_data = new FormData($("#upload-data-form")[0]);
+        
+        $.ajax({
+            url: "/common-api/file-data-upload",
+            type: 'post',
+            csrftoken: '{{ csrf_token }}',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == "SUCCESS"){
+                    var file_path = response.DATA.PR_FILE;
+                    $('#upload-data-modal').modal('hide');
+                    $("#PDF").val(file_path)
+                    $("#pdf-file").show();
+                    $("#pdf-file").attr('href', file_path);
+                    document.getElementById("upload-data-form").reset();
+                }else{
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script> {% endcomment %}

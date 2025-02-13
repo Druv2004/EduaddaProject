@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Eduadda | {% block title %}{% endblock title %}</title>
+
+		<!-- Google Font: Source Sans Pro -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+		<!-- Font Awesome Icons -->
+		<link rel="stylesheet" href="{% static 'Eduadda/pages/plugins/fontawesome-free/css/all.min.css' %}">
+		<!-- IonIcons -->
+		<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' %}">
+		<link rel="stylesheet" href="{% static 'Eduadda/pages/plugins/select2/css/select2.min.css' %}">
+		<link rel="stylesheet" href="{% static 'Eduadda/pages/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+
+		<!-- Theme style -->
+		<link rel="stylesheet" href="{% static 'Eduadda/pages/dist/css/adminlte.min.css' %}">
+		<link rel="stylesheet" href="{% static 'Eduadda/pages/dist/css/custom.css' %}">
+
+		<!-- Toastr CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+	
+		<style>
+			.swal-button {
+    			padding: 5px 25px;
+			}
+		</style>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+		<link href="https://raw.githack.com/ttskch/select2-bootstrap4-theme/master/dist/select2-bootstrap4.css" rel="stylesheet">
+
+	</head>
+
+	<body class="hold-transition sidebar-mini layout-fixed">
+		<div class="wrapper">
+
+			<!-- Preloader -->
+			<!-- <div class="preloader main-loader flex-column justify-content-center align-items-center">
+				<img class="animation__shake" src="{% static 'Eduadda/pages/dist/img/loader.gif' %}" alt="AdminLTELogo" width="350">
+			</div> -->
+
+			{% block main-content %} {% endblock main-content %}
+
+		</div>
+	  
+
+		<!-- jQuery -->
+		<script src="{% static 'Eduadda/pages/plugins/jquery/jquery.min.js' %}"></script>
+		<!-- Bootstrap -->
+		<script src="{% static 'Eduadda/pages/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+		<!-- AdminLTE -->
+		<script src="{% static 'Eduadda/pages/dist/js/adminlte.js' %}"></script>
+
+		<script src="{% static 'Eduadda/pages/plugins/summernote/summernote-bs4.min.js' %}"></script>
+
+		<!-- OPTIONAL SCRIPTS -->
+		<script src="{% static 'Eduadda/pages/plugins/chart.js/Chart.min.js' %}"></script>
+		<!-- AdminLTE for demo purposes -->
+		<script src="{% static 'Eduadda/pages/dist/js/demo.js' %}"></script>
+		<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+		<script src="{% static 'Eduadda/pages/dist/js/pages/dashboard3.js' %}"></script>
+		
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+		<!-- Toastr js -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+		
+		<script>
+			toastr.options = {
+				"closeButton": true,
+				"debug": false,
+				"newestOnTop": false,
+				"progressBar": true,
+				"positionClass": "toast-top-right",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1000",
+				"timeOut": "5000",
+				"extendedTimeOut": "1000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut",
+			}
+		</script>
+		
+	</body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+	<script>
+		$(function () {
+			$('#department-form #PR_DESIGNATION').each(function () {
+				$(this).select2({
+					theme: 'bootstrap4',
+					width: 'style',
+					placeholder: $(this).attr('placeholder'),
+					allowClear: Boolean($(this).data('allow-clear')),
+				});
+			});
+
+			$('#org-type-form #PR_DEPARTMENT').each(function () {
+				$(this).select2({
+					theme: 'bootstrap4',
+					width: 'style',
+					placeholder: $(this).attr('placeholder'),
+					allowClear: Boolean($(this).data('allow-clear')),
+				});
+			});
+		});
+	</script>	
+</html>
+
+</html>

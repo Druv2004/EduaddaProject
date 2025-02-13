@@ -1,0 +1,428 @@
+{% extends "eduaddaWebsitePages/base.html" %}
+{% block title %}Home{% endblock title %}
+{% block body %}
+
+
+<!-- Hero Section -->
+<section>
+    <div class="container col-xxl-12 py-5">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5 py-md-0 g-md-0">
+            <div class="col-12 py-5 col-lg-6 position-relative overflow-hidden">
+                
+
+                <div class="swiper swipermain align-content-center">
+                    <div class="swiper-wrapper">
+
+                        {% for banner in banners %}
+                            <div class="swiper-slide text-center">
+                                <!-- Display image if it's an image type -->
+                                <img src="{{ banner.PR_IMAGE }}" value="{{ banner.PR_BANNER_ID }}" alt="" class="img-fluid shadow" style="max-height: 270px;">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next btn d-none"></div>
+                    <div class="swiper-button-prev btn d-none"></div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold lh-1 mb-3">Start Your Education Journey with Eduadda</h1>
+                <p class="lead">Explore the best courses and notes to boost your learning journey with Eduadda!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- hero section -->
+<!-- BANNER SECTION -->
+
+
+<!-- COURSE SECTION -->
+<section id="container-bg">
+    <div class="container py-4" >
+        <div class="d-flex justify-content-between mb-5 py-3">
+            <div class="display-5 fw-bold">Discover Courses</div>
+            <div class="py-2">
+                <a class="btn text-dark fs-5 bg-light" href="{% url 'course' %}">See all</a>
+            </div>
+        </div>
+        <div class="row">
+            {% for i in courses %}
+                {% if forloop.counter <= 4 %}
+                {% if i.THUMBNAIL%}
+                    <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0">
+                            <div class="text-center course-link">
+                                <img src="{{ i.THUMBNAIL }}" value="{{i.COURSE_ID}}" alt="" class="img-fluid mb-3 shadow-sm">
+                                <div class="lead fw-bold">{{i.NAME}}</div>
+                                <div class="">{{i.DESCRIPTION}}</div>
+                                <div class="pb-3">&#8377;{{i.PRICE}}</div>
+                                <a href="{% url 'course' %}" class="btn btn-primary w-100">Buy Now</a>
+                            </div>
+                        </a>
+                    </div>
+                {% else %}
+                <div class="col-lg-3 col-md-6 col-6 pb-4 pb-lg-0">
+                        <div class="text-center course-link">
+                            <img src="/media/default-img.png" value="{{i.COURSE_ID}}" alt="" class="img-fluid mb-3 shadow-sm">
+                            <div class="lead fw-bold">{{i.NAME}}</div>
+                            <div class="">{{i.DESCRIPTION}}</div>
+                            <div class="pb-3">&#8377;{{i.PRICE}}</div>
+                            <a href="{% url 'course' %}" class="btn btn- w-100">Buy Now</a>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+            
+        </div>
+
+    </div>
+</section>
+
+
+<!-- COURSE SECTION -->
+
+<!-- NOTES SECTION -->
+<section id="">
+    <div class="container py-4" >
+        <div class="d-flex justify-content-between mb-5 py-3">
+            <div class="display-5 fw-bold">Discover Study Material</div>
+            <div class="py-2">
+                <a class="btn text-light fs-5 bg-dark" href="{% url 'notes' %}">See all</a>
+            </div>
+        </div>
+        <div class="row">
+            {% for i in notes %}
+                {% if forloop.counter <= 4 %}
+                {% if i.THUMBNAIL%}
+                    <div class="col-lg-3 col-md-6 col-12 pb-4 pb-lg-0">
+                            <div class="text-center notes-link">
+                                <img src="{{ i.THUMBNAIL }}" value="{{i.NOTES_ID}}" alt="" class="img-fluid mb-3 shadow-sm">
+                                <div class="lead fw-bold">{{i.NAME}}</div>
+                                <div class="">{{i.DESCRIPTION}}</div>
+                                <div class="pb-3">&#8377;{{i.PRICE}}</div>
+                                <a href="{% url 'notes' %}" class="btn btn-primary w-100">Buy Now</a>
+                            </div>
+                        </a>
+                    </div>
+                {% else %}
+                <div class="col-lg-3 col-md-6 col-6 pb-4 pb-lg-0">
+                        <div class="text-center notes-link">
+                            <img src="/media/default-img.png" value="{{i.NOTES_ID}}" alt="" class="img-fluid mb-3 shadow-sm">
+                            <div class="lead fw-bold">{{i.NAME}}</div>
+                            <div class="">{{i.DESCRIPTION}}</div>
+                            <div class="pb-3">&#8377;{{i.PRICE}}</div>
+                            <a href="{% url 'notes' %}" class="btn btn-primary w-100">Buy Now</a>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+            
+        </div>
+
+    </div>
+</section>
+ 
+<!-- NOTES SECTION -->
+
+<!-- Explore Our Courses & Notes -->
+
+<!-- Explore Our Courses & Notes Section -->
+<section class="py-5 bg-gradient" id="explore-courses">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-4 fw-bold">Explore Our Courses & Notes</h2>
+        <p class="lead text-light">Your Learning, Your Pace</p>
+      </div>
+  
+      <div class="row g-4">
+        <!-- Feature 1: Variety of Courses -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-4">
+              <i class="fas fa-book-open fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Variety of Courses</h5>
+              <p class="card-text text-muted">Choose from a wide range of courses tailored to Class 12th and CUET preparation.</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Feature 2: Comprehensive Notes -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-4">
+              <i class="fas fa-sticky-note fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Comprehensive Notes</h5>
+              <p class="card-text text-muted">Access detailed, easy-to-understand notes curated by subject experts.</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Feature 3: Affordable Pricing -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-4">
+              <i class="fas fa-tags fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Affordable Pricing</h5>
+              <p class="card-text text-muted">High-quality resources at prices that won’t break the bank.</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Feature 4: Instant Access -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-4">
+              <i class="fas fa-rocket fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Instant Access</h5>
+              <p class="card-text text-muted">Start learning immediately after purchase—no waiting required.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Call-to-Action Button -->
+      <div class="text-center mt-5">
+        <a href="{% url 'course' %}" class="btn btn-light btn-lg px-5 py-3 fw-bold">Explore All Courses</a>
+      </div>
+    </div>
+  </section>
+
+<!-- Explore Our Courses & Notes -->
+
+<!-- About Us Section -->
+<!-- Why Eduadda Section -->
+<section class="why-eduadda py-5 bg-light">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-4 fw-bold">Why Eduadda?</h2>
+        <p class="lead">Your Ultimate Partner for Class 12th & CUET Success</p>
+      </div>
+  
+      <!-- Features Grid -->
+      <div class="row g-4">
+        <!-- Feature 1: Exam-Focused Learning -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm text-center p-4">
+            <div class="card-body">
+              <i class="fas fa-bullseye fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Exam-Focused Learning</h5>
+              <p class="card-text">Our courses align with the latest Class 12th and CUET syllabus, ensuring you're fully prepared.</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Feature 2: Expert Faculty -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm text-center p-4">
+            <div class="card-body">
+              <i class="fas fa-chalkboard-teacher fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Expert Faculty</h5>
+              <p class="card-text">Learn from experienced educators who specialize in Class 12th and CUET preparation.</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Feature 3: Comprehensive Study Material -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm text-center p-4">
+            <div class="card-body">
+              <i class="fas fa-book-open fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Comprehensive Study Material</h5>
+              <p class="card-text">Access high-quality notes, practice papers, and revision guides curated by experts.</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Feature 4: Interactive Learning Tools -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm text-center p-4">
+            <div class="card-body">
+              <i class="fas fa-laptop-code fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Interactive Learning Tools</h5>
+              <p class="card-text">Engage with live classes, quizzes, and mock tests to make learning fun and effective.</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Feature 5: Flexible Learning Schedule -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm text-center p-4">
+            <div class="card-body">
+              <i class="fas fa-clock fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Flexible Learning Schedule</h5>
+              <p class="card-text">Study at your own pace, anytime, anywhere, with 24/7 access to resources.</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Feature 6: Proven Track Record -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm text-center p-4">
+            <div class="card-body">
+              <i class="fas fa-trophy fa-3x text-dark mb-3"></i>
+              <h5 class="card-title fw-bold">Proven Track Record</h5>
+              <p class="card-text">Join thousands of students who've aced Class 12th and CUET with Eduadda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Testimonial Carousel -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <!-- Testimonial 1 -->
+              <div class="carousel-item active">
+                <div class="testimonial text-center p-4">
+                  <p class="lead">"Eduadda helped me score 95% in Class 12th and secure a top rank in CUET. Highly recommended!"</p>
+                  
+                </div>
+              </div>
+              <!-- Testimonial 2 -->
+              <div class="carousel-item">
+                <div class="testimonial text-center p-4">
+                  <p class="lead">"The study material and mock tests were a game-changer for my CUET preparation. Thank you, Eduadda!"</p>
+                  
+                </div>
+              </div>
+              <!-- Testimonial 3 -->
+              <div class="carousel-item">
+                <div class="testimonial text-center p-4">
+                  <p class="lead">"The doubt-solving sessions made learning so much easier. Eduadda is the best!"</p>
+                  
+                </div>
+              </div>
+            </div>
+            <!-- Carousel Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Call-to-Action Button -->
+      <div class="text-center mt-5">
+        <a href="#" class="btn btn-dark btn-lg">Start Your Journey Today</a>
+      </div>
+    </div>
+  </section>
+
+
+
+
+<!-- Swiper Scripts -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    const swiper = new Swiper('.swipermain', {
+        loop: true,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+        spaceBetween: 30,
+        slidesPerView: 1,
+    });
+</script>
+
+
+{% endblock body %}
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Add event listener to all "Buy Now" buttons
+    document.querySelectorAll('.btn-primary').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // Get course ID from the clicked button
+            const courseId = this.closest('.course-link').querySelector('img').getAttribute('value');
+
+            // Create a Razorpay order
+            fetch('/commonApis/create-razorpay-order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ course_id: courseId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Open Razorpay payment modal
+                const options = {
+                    key: data.key,
+                    amount: data.amount,
+                    currency: data.currency,
+                    order_id: data.order_id,
+                    name: 'Eduadda Course Purchase',
+                    description: 'Purchase Course',
+                    handler: function (response) {
+                        // Handle successful payment
+                        alert('Payment successful!');
+                        savePurchase(courseId, response.razorpay_payment_id);
+                    },
+                    prefill: {
+                        name: 'User Name',
+                        email: 'user@example.com',
+                        contact: '9999999999'
+                    },
+                    theme: {
+                        color: '#3399cc'
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Payment failed. Please try again.');
+            });
+        });
+    });
+
+    // Function to save purchase details
+    function savePurchase(courseId, paymentId) {
+        fetch('/commonApis/purchase-course/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                course_id: courseId,
+                payment_id: paymentId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Purchase saved successfully!');
+            } else {
+                alert('Failed to save purchase.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to save purchase.');
+        });
+    }
+});
+</script>

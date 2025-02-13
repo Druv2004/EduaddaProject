@@ -1,0 +1,195 @@
+{% extends 'apiForms/base.html' %}
+{% load static %}
+{% block title %}Course form{% endblock title %}
+{% block main-content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card h-auto mb-2">
+                    <div id="element0" class="overlay-content1 popup4 square">
+                        <div class="popup_body modal-body overflow-auto scrollbar" id="style-2">
+                            <div class="col-sm-12 mb-4 mt-2 force-overflow">
+                                <div class="create_fluid">
+                                    <span class="box_heading">&nbsp;</span>
+                                    <div class="column mt--20 col_100 mb-0">
+                                        <form method="post" id="course-form" enctype="multipart/form-data">
+                                            <input type="hidden" id="COURSE_ID" name="COURSE_ID" value="{{course_id}}">
+                                            <div class="row">
+
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="col-md-4  col-lg-4  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Name <span style="color: red;">*</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-10  col-lg-8  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" id="NAME" name="NAME" placeholder="Enter Name">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="col-md-4  col-lg-4  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Price <span style="color: red;">*</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-10  col-lg-8  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" id="PRICE" name="PRICE" placeholder="Enter Price">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="col-md-4  col-lg-4  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Category <span style="color: red;">*</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-10  col-lg-8  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <select class="form-control" id="CATEGORY" name="CATEGORY">
+                                                                    <option value="">Select</option>
+                                                                    <option value="1">12th</option>
+                                                                    <option value="2">CUET</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="col-md-4  col-lg-4  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Status <span style="color: red;">*</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-10  col-lg-8  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <select class="form-control" id="PR_STATUS" name="PR_STATUS">
+                                                                    <option value="">Select</option>
+                                                                    <option value="1">Active</option>
+                                                                    <option value="0">Inactive</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                               
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="col-md-4  col-lg-4  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Description</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-10  col-lg-8  col-xs-12  col-sm-12">
+                                                            <div class="form-group">
+                                                                <textarea class="form-control" id="DESCRIPTION" name="DESCRIPTION" placeholder="Enter description"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Thumbnail<span style="color: red;">*</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-10 col-lg-8 col-xs-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <button type="button" class="btn btn-warning btn-sm" onclick="uploadThumbnailModal();">
+                                                                    <span class="fas fa-arrow-up"></span>
+                                                                </button>
+                                                                <img src="" class="img-thumbnail" width="35" height="35" id="thumbnail-file">
+                                                                <input type="hidden" class="form-control" id="THUMBNAIL" name="THUMBNAIL">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Video<span style="color: red;">*</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-10 col-lg-8 col-xs-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <button type="button" class="btn btn-warning btn-sm" onclick="uploadVideoModal();">
+                                                                    <span class="fas fa-arrow-up"></span>
+                                                                </button>
+                                                                <a class="btn btn-primary btn-sm" id="video-file" target="_blank" style="display: none;">
+                                                                    <span class="fas fa-file"></span>
+                                                                </a>
+                                                                <input type="hidden" class="form-control" id="VIDEO" name="VIDEO">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 
+                                                
+                                                
+                                              
+                                            </div> 
+                                            <div class="col-md-12">
+                                                <hr>
+                                                <div class="footer_btn col_100 pull-left">
+                                                    {% if action == "add" %}
+                                                    <button type="button" class="btn btn-primary btn-sm" onclick="courseDataSubmit();"><span class="fas fa-save"></span> Submit</button>
+                                                    {% endif %}
+                                                    {% if action == "update" %}
+                                                    <button type="button" class="btn btn-primary btn-sm" onclick="courseDataUpdate();"><span class="fas fa-save"></span> Update</button>
+                                                    {% endif %} 
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>      
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- UPLOAD DATA MODAL  -->
+<div id="upload-data-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog dialog-sm">
+  
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="modal-title"></h4>
+            </div>
+            <form method="post" id="upload-data-form">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" id="PR_TOKEN" name="PR_TOKEN" value="{{user_data.PR_TOKEN}}">
+                    <input type="file" class="form-control" id="PR_FILE" name="PR_FILE">
+                    <p style="font-size: 12px; color: red;" id="note-msg"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="uploadDataSubmit();">OK</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+  
+{% include 'apiForms/common-page/course/course-jquery.html' %}
+
+{% endblock main-content %}
