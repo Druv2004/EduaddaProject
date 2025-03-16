@@ -48,6 +48,13 @@ def notes(request):
     }
     return render(request,'eduaddaWebsitePages/notes.html',context)
 
+def review(request):
+    review = EduaddaReview.objects.filter(STATUS=1)
+    context = {
+         'navbar' : 'review',
+         'review': review
+    }
+    return render(request,'eduaddaWebsitePages/review.html',context)
 
 def myPurchase(request):
     user_id = request.session.get('user_id')  # Ensure this matches your session key

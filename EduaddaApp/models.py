@@ -64,6 +64,19 @@ class EduaddaNotes(models.Model):
     class Meta:
         db_table = "Eduadda_notes"
         
+# ========= NOTES MODEL ===========
+class EduaddaReview(models.Model):
+    REVIEW_ID = models.AutoField(primary_key=True)
+    NAME = models.TextField(null=True, blank=True, default='')
+    REVIEW = models.TextField(null=True, blank=True, default='')
+    STAR = models.IntegerField(null=True, blank=True, default=0)
+    STATUS = models.IntegerField(null=True, blank=True, default=0)
+    PR_CREATED_AT = models.DateTimeField(auto_now_add=True)
+    PR_MODIFIED_AT = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = "Eduadda_review"
+        
         
 # ========= COURSE PURCHASE MODEL ===========
 class EduaddaCoursePurchase(models.Model):

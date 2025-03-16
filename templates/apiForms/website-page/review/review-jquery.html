@@ -1,0 +1,186 @@
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+<!-- CALLABLE FUNCTION HERE -->
+<script>
+    $(document).ready(function(){
+        var data_id = $('#REVIEW_ID').val();
+        
+        if (data_id != ''){
+            populateWebsiteReviewData(data_id);
+        }else{
+            document.getElementById('review-file').src = '/media/default-img.png';
+        }
+    });
+</script>
+
+<!--WEBSITE BANNER DATA SUBMIT FUNCTION HERE -->
+<script>
+    function websiteReviewDataSubmit(){
+        
+        var name = $("#NAME").val();
+        var review = $("#REVIEW").val();
+        var star = $("#STAR").val();
+        var status = $("#STATUS").val();
+        
+        var form_data = new FormData($("#website-review-form")[0]);
+        
+        if (!$.trim(name)){
+            toastr.error('Please enter name!!');
+            return false;
+        }else if (!$.trim(review)){
+            toastr.error('Please enter review!!');
+            return false;
+        } else if (!$.trim(star)){
+            toastr.error('Please select star!!');
+            return false;
+        } else if (!$.trim(status)){
+            toastr.error('Please select status!!');
+            return false;
+        }
+        
+        $.ajax({
+            url: "/website-api/review-add",
+            type: 'post',
+            csrftoken: '{{ csrf_token }}',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == 'SUCCESS'){
+                    document.getElementById("website-review-form").reset();
+                    swal('', response.MESSAGE, 'success');
+                    return true;
+                } else {
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+
+<!-- POPULATE WEBSITE BANNER DATA FUNCTION HERE -->
+<script>
+    function populateWebsiteReviewData(id){
+
+        $.ajax({
+            url: "/website-api/review-list",
+            type: 'post',
+            
+            data: {'REVIEW_ID': id},
+            success: function(response){
+                if (response.STATUS == "SUCCESS"){
+                    var dt = response.DATA;
+                    
+                    $("#NAME").val(dt.NAME);
+                    $("#REVIEW").val(dt.REVIEW);
+                    $("#STAR").val(dt.STAR);
+                    $("#STATUS").val(dt.STATUS);
+                    
+                }
+            }
+        });
+    }
+</script>
+
+<!--WEBSITE BANNER DATA UPDATE FUNCTION HERE -->
+<script>
+    function websiteReviewDataUpdate(){
+        
+        var name = $("#NAME").val();
+        var review = $("#REVIEW").val();
+        var star = $("#STAR").val();
+        var status = $("#STATUS").val();
+        
+        var form_data = new FormData($("#website-review-form")[0]);
+        
+        if (!$.trim(name)){
+            toastr.error('Please enter name!!');
+            return false;
+        }else if (!$.trim(review)){
+            toastr.error('Please enter review!!');
+            return false;
+        } else if (!$.trim(star)){
+            toastr.error('Please select star!!');
+            return false;
+        } else if (!$.trim(status)){
+            toastr.error('Please select status!!');
+            return false;
+        }
+        
+        $.ajax({
+            url: "/website-api/review-update",
+            type: 'post',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == 'SUCCESS'){
+                    swal('', response.MESSAGE, 'success');
+                    return true;
+                }else {
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+
+<!-- UPLOAD DATA FUNCTION HERE -->
+<script>
+    function uploadDataModal(){
+        $('#upload-data-modal').modal('show');
+        $('#modal-title').text('Banner file upload');
+        $('#note-msg').text('Note:- File format must be JPG, JPEG, PNG,GIF or mp4.');
+    }
+
+    function uploadDataSubmit(){
+        var file_data = $('#PR_FILE').val();
+
+        if (!$.trim(file_data)){
+            toastr.error('Please choose file!!');
+            return false;
+        }
+
+        var ext = file_data.split('.').pop().toLowerCase();
+        var file_size = $('#PR_FILE')[0].files[0].size / 1024 / 1024; 
+        
+        if ($.inArray(ext, ['png', 'jpg', 'jpeg', 'mp4']) == -1){
+	        toastr.error('File format must be JPG, JPEG, PNG,GIF or mp4!!');
+            return false;
+	    } else if (file_size > 10) {  
+            toastr.error("File size must be less than 10 MB!!"); 
+            return false; 
+        }
+
+        var form_data = new FormData($("#upload-data-form")[0]);
+        
+        $.ajax({
+            url: "/common-api/file-data-upload",
+            type: 'post',
+            csrftoken: '{{ csrf_token }}',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response){
+                if (response.STATUS == "SUCCESS"){
+                    var file_path = response.DATA.PR_FILE;
+                    $('#upload-data-modal').modal('hide');
+                    $("#PR_IMAGE").val(file_path);
+                    document.getElementById('banner-file').src = file_path;
+                    document.getElementById("upload-data-form").reset();
+                }else{
+                    toastr.error(response.MESSAGE);
+                    return false;
+                }
+            }
+        });
+    }
+</script>

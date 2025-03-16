@@ -7,3 +7,9 @@ class EduaddaBannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = EduaddaBanner
         fields = ('__all__')
+        
+        
+class EduaddaReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EduaddaReview
+        fields = ('__all__')

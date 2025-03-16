@@ -56,6 +56,9 @@
                       <li class="nav-item">
                         <a class="nav-link fs-5 {% if navbar == 'notes' %} active {% endif %}" href="https://docs.google.com/forms/d/e/1FAIpQLSfQgPBCKhgQgBxW-m3hpJR-Oap4PGyshA4hZfSRSW_9NQcx_w/viewform" target="_blank">Preference Sheet</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link fs-5 {% if navbar == 'review' %} active {% endif %}" href="{% url 'review' %}">Review</a>
+                      </li>
               
                       <!-- My Purchase and Profile Links (hidden by default) -->
                       <li class="nav-item" id="myPurchaseLink" style="display: none;">

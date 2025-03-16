@@ -77,3 +77,69 @@ class EduaddaBannerViewSet(viewsets.ModelViewSet):
 
         except Exception as ex:
             return CbtApiResponse([], ApiStatus.Exception, CbtMessage.CbtExceptionMsg(ex)).cbtResponse()    
+        
+        
+
+
+# ============== REVIEW API's CLASS HERE ================
+class EduaddaReviewViewSet(viewsets.ModelViewSet):
+    
+    # REVIEW ADD FUNCTION HERE
+    def reviewAdd(self, request):
+        try:
+            data = request.data
+
+            serializer = EduaddaReviewSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+
+                return CbtApiResponse(serializer.data, ApiStatus.Success, CbtMessage.SubmitSuccessMsg).cbtResponse()
+                
+            return CbtApiResponse(serializer.errors, ApiStatus.Failure, CbtMessage.DataNotValid).cbtResponse()
+
+            
+        except Exception as ex:
+            return CbtApiResponse([], ApiStatus.Exception, CbtMessage.CbtExceptionMsg(ex)).cbtResponse()
+        
+        
+    # REVIEW UPDATE FUNCTION HERE
+    def reviewUpdate(self, request):
+        try:
+            data = request.data
+            
+            
+
+            data_obj = EduaddaReview.objects.get(REVIEW_ID=data.get('REVIEW_ID'))
+            serializer =  EduaddaReviewSerializer(data_obj, data=data)
+            if serializer.is_valid():
+                serializer.save()
+
+                return CbtApiResponse(serializer.data, ApiStatus.Success, CbtMessage.UpdateSuccessMsg).cbtResponse()
+        
+            return CbtApiResponse(serializer.errors, ApiStatus.Failure, CbtMessage.DataNotValid).cbtResponse()
+
+            
+        except Exception as ex:
+            return CbtApiResponse([], ApiStatus.Exception, CbtMessage.CbtExceptionMsg(ex)).cbtResponse()
+        
+    
+    #  REVIEW LIST FUNCTION HERE
+    def reviewList(self, request):
+        try:
+            data = request.data
+            
+            if data.get('REVIEW_ID') is not None:                  
+                data_objs = EduaddaReview.objects.get(REVIEW_ID=data.get('REVIEW_ID'))
+                serializer = EduaddaReviewSerializer(data_objs)
+                return CbtApiResponse(serializer.data, ApiStatus.Success).cbtResponse()
+            
+            elif data.get('REVIEW_ID') is None:
+                data_objs = EduaddaReview.objects.filter(STATUS=1)
+                serializer = EduaddaReviewSerializer(data_objs, many=True) 
+                return CbtApiResponse(serializer.data, ApiStatus.Success).cbtResponse()
+            
+            else:
+                return CbtApiResponse([], ApiStatus.Failure, CbtMessage.DataNotFound).cbtResponse()
+
+        except Exception as ex:
+            return CbtApiResponse([], ApiStatus.Exception, CbtMessage.CbtExceptionMsg(ex)).cbtResponse()         
