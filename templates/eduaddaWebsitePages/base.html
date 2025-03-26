@@ -19,8 +19,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <title>Eduadda</title>
   </head>
   <body>
@@ -34,9 +35,11 @@
                   </a>
               
                   <!-- Navbar Toggle (for responsiveness) -->
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
                   </button>
+
               
                   <!-- Navbar Links -->
                   <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
@@ -50,12 +53,12 @@
                       <li class="nav-item">
                         <a class="nav-link fs-5 {% if navbar == 'notes' %} active {% endif %}" href="{% url 'notes' %}">Notes</a>
                       </li>
-                      <li class="nav-item">
+                      <!-- <li class="nav-item">
                         <a class="nav-link fs-5 {% if navbar == 'notes' %} active {% endif %}" href="https://docs.google.com/forms/d/e/1FAIpQLSdM811CFFy8snJg5jFuMBwsnOV5y4BQlSKzOIujmyqB66JWWg/viewform" target="_blank">CUET Counselling</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link fs-5 {% if navbar == 'notes' %} active {% endif %}" href="https://docs.google.com/forms/d/e/1FAIpQLSfQgPBCKhgQgBxW-m3hpJR-Oap4PGyshA4hZfSRSW_9NQcx_w/viewform" target="_blank">Preference Sheet</a>
-                      </li>
+                      </li> -->
                       <li class="nav-item">
                         <a class="nav-link fs-5 {% if navbar == 'review' %} active {% endif %}" href="{% url 'review' %}">Review</a>
                       </li>
@@ -80,6 +83,18 @@
               
         </div>
     </section>
+    <script>
+      $(document).ready(function () {
+        $(".navbar-nav .nav-link").on("click", function () {
+            if ($(".navbar-toggler").is(":visible")) {
+                $(".navbar-collapse").collapse("hide"); // Close navbar
+            }
+        });
+    });
+    
+    
+    
+    </script>
     
     
       
@@ -254,6 +269,7 @@
     });
   });
 </script>
+
 
 
 
