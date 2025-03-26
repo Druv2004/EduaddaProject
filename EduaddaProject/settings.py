@@ -12,21 +12,24 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv  # Add this if missing
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# ✅ Ensure BASE_DIR is correctly defined
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# ✅ Load environment variables
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&tu1s(k1rfgb5r4n1&t*x)r-zw0n9vtw#f@dlta-(%d11y1=o('
+SECRET_KEY = os.getenv("SECRET_KEY", "your-default-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 
 
 # Application definition
@@ -53,9 +56,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 
-CORS_ALLOWED_ORIGINS = ['', '']
+CORS_ALLOWED_ORIGINS = ['https://eduadda.org', 'https://www.eduadda.org']
 
 CORS_ALLOW_METHODS = (
     'DELETE',
@@ -66,19 +69,8 @@ CORS_ALLOW_METHODS = (
     'PUT',
 )
 
-CORS_ALLOW_HEADERS = (
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-)
 
-CORS_ORIGIN_WHITELIST=['', '']
+CORS_ORIGIN_WHITELIST=CORS_ALLOWED_ORIGINS
 
 CORS_ALLOW_HEADERS = "*"
 
@@ -269,11 +261,11 @@ WSGI_APPLICATION = 'EduaddaProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Eduadda_db',  # Database name
-        'USER': 'root',  # Database username
-        'PASSWORD': 'root',  # Database password
-        'HOST': 'localhost',  # Host, e.g., '127.0.0.1' or 'localhost'
-        'PORT': '3306',  # MySQL default port
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
@@ -318,7 +310,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
@@ -326,11 +318,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-RAZORPAY_API_KEY = 'rzp_test_MlMwJFWCqcJcAR'
-RAZORPAY_API_SECRET = 'qVWxgtWD93Wbv1FWxTBkbmaF'
+RAZORPAY_API_KEY = os.getenv('RAZORPAY_API_KEY')
+RAZORPAY_API_SECRET = os.getenv('RAZORPAY_API_SECRET')
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  
-SESSION_COOKIE_SECURE = False  # Only send session cookies over HTTPS
+SESSION_COOKIE_SECURE = True  # Only send session cookies over HTTPS
 SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript from accessing the session cookie
 SESSION_COOKIE_SAMESITE = 'Lax'  # Prevent CSRF attacks
 SESSION_COOKIE_AGE = 1209600  # 2 weeks (in seconds)
@@ -342,8 +334,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'educationaddaharshsuri@gmail.com'
-EMAIL_HOST_PASSWORD = 'unan qmyp maes lpem'
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 
 # Allow larger file uploads
