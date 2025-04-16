@@ -22,7 +22,7 @@
         var pdf = $("#PDF").val();
         var price = $("#PRICE").val();
         var category = $("#CATEGORY").val();
-        var status = $("#PR_STATUS").val();
+        var status = $("#STATUS").val();
         
         var form_data = new FormData($("#notes-form")[0]);
         
@@ -85,7 +85,7 @@
                     $("#DESCRIPTION").val(dt.DESCRIPTION);
                     $("#PRICE").val(dt.PRICE);
                     $("#CATEGORY").val(dt.CATEGORY);
-                    $("#PR_STATUS").val(dt.PR_STATUS);
+                    $("#STATUS").val(dt.STATUS);
                     $("#THUMBNAIL").val(dt.THUMBNAIL);
                     $("#PDF").val(dt.PDF);
                     if (dt.THUMBNAIL != ''){
@@ -111,7 +111,7 @@
         var thumbnail = $("#THUMBNAIL").val();
         var pdf = $("#PDF").val();
         var category = $("#CATEGORY").val();
-        var status = $("#PR_STATUS").val();
+        var status = $("#STATUS").val();
         var price = $("#PRICE").val();
         
         var form_data = new FormData($("#notes-form")[0]);

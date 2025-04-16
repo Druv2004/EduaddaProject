@@ -27,8 +27,8 @@ def home(request):
     return render(request,'eduaddaWebsitePages/home.html',context)
 
 def course(request):
-    class_12th_courses = EduaddaCourse.objects.filter(CATEGORY=1)  # CATEGORY 1: Class 12th
-    cuet_courses = EduaddaCourse.objects.filter(CATEGORY=2)  # CATEGORY 2: CUET
+    class_12th_courses = EduaddaCourse.objects.filter(CATEGORY=1, STATUS =1)  # CATEGORY 1: Class 12th
+    cuet_courses = EduaddaCourse.objects.filter(CATEGORY=2, STATUS =1)  # CATEGORY 2: CUET
 
     context = {
         'class_12th_courses': class_12th_courses,
@@ -38,8 +38,8 @@ def course(request):
     return render(request,'eduaddaWebsitePages/course.html', context)
 
 def notes(request):
-    class_12th_notes = EduaddaNotes.objects.filter(CATEGORY=1)  # CATEGORY 1: Class 12th
-    cuet_notes = EduaddaNotes.objects.filter(CATEGORY=2)  # CATEGORY 2: CUET
+    class_12th_notes = EduaddaNotes.objects.filter(CATEGORY=1, STATUS =1)  # CATEGORY 1: Class 12th
+    cuet_notes = EduaddaNotes.objects.filter(CATEGORY=2, STATUS =1)  # CATEGORY 2: CUET
 
     context = {
         'class_12th_notes': class_12th_notes,
